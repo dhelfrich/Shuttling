@@ -1,0 +1,30 @@
+Experiment Brainstorm:
+
+1) Gradient. Heat on one end, cold around. single beetle at one end. observe movement and steady state?
+
+Thermal camera, how to cool environment (dry ice?), cardboard to insulate, power source to heat the metal rod. 
+
+Talk to Harvey about solving 3D heat equation through glass, air, acrylic layers.
+
+EXPERIMENTAL SETUP:
+
+1) Arena set up with heater on one end (low watt density=long life). Keep the heater cool and have rapid heat transfer out of it.
+-Establish temperature as a function of distance from heater.
+- T(x)=Th-(Th-Tinf)*x/L if we are assuming steady state
+- We should set up in a temperature controlled environment to make things consistent, ie a fridge
+- heaters are available for this application that should be very reliable in terms of wattage density.
+- How can we measure temperature at each location along the arena? Aquarium thermometers? Mini temperature probes?
+
+CONTROL: Uniform temperature everywhere (a few different temps?)
+
+2) Observe individual beetle in arena for some length of time (30mins?), taking pictures at regular intervals (15sec?)
+
+3) Create input data for our function to run through.
+
+4) Analyze
+-Does our model correctly predict when a beetle moves?
+-Do they end up in the right place eventually?
+-Is there actually a predictable pattern to beetle movement or is it too stochastic?
+
+Next ideas: use an "average beetle" rather than individuals to track movements.
+
