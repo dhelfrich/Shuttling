@@ -45,8 +45,8 @@ par$h <- 1
 par$max_iter <- 10000
 
 # to keep things straight, here's an addressed vector of coefficients
-#         1   2    3    4  5    6      7   8   9  10   11    12    13   14  15  16  17   18
-#par <- c(K_s,K_f, K_sf, G, H, T_rbar, T_g, R, Q_n, M, lE_b, lE_r, lE_s, C, K_0, tau, h, max_iter)
+#         $K_s $K_f$K_sf  $G $H $T_rbar  $T_g $R $Q_n $M $lE_b  $lE_r  $lE_s[14][15][16][17]  [18]
+#par <- c(K_s,K_f, K_sf,   G, H, T_rbar, T_g, R, Q_n, M, lE_b,  lE_r,  lE_s, C, K_0, tau, h, max_iter)
 
 
 #=======ODE===========
@@ -64,9 +64,9 @@ ddt <- function(par,T_b,T_a){
 # Eq (13.25)
 fT_e <- function(par,T_a){
   # K_sf*(H*T_a + R*T_rbar + Q_n + T_g) + G*T_g*(H+R)
-  numerator <- par[3]*(par[5]*T_a + par[8]*par[6] + par[9] + par[7]) + par[4]*par[7]*(par[5]+par[8])
+  numerator <- par$K_sf*(par$H*T_a + par$R*par$T_rbar + par$Q_n + par$T_g) + par$G*par$T_g*(par$H+par$R)
   # (K_sf + G)*(H + R) + G*K_sf
-  denominator <- (par[3] + par[4])*(par[5] + par[8]) + par[4]*par[3]
+  denominator <- (par$K_sf + par$G)*(par$H + par$R) + par$G*par$K_sf
   T_e <- numerator/denominator
   return(T_e)
 }
@@ -75,11 +75,11 @@ fT_e <- function(par,T_a){
 # Eq (13.28)
 fM_star <- function(par,T_b){
   # (1 + ((H + R)/K_f)) / (1 + ((H + R)/K_sf))
-  bracket1 <- (1 + ((par[5] + par[8])/par[2]))/(1 + ((par[5] + par[8])/par[3]))
+  bracket1 <- (1 + ((par$H + par$R)/par$K_f))/(1 + ((par$H + par$R)/par$K_sf))
   # 1/(1 + ((H + R)/K_sf))
-  bracket2 <- 1/(1 + ((par[5] + par[8])/par[3]))
+  bracket2 <- 1/(1 + ((par$H + par$R)/par$K_sf))
   # (M - lE_b) - lE_s*bracket1 - lE_r*bracket2
-  M_star <- fnet_M(par,T_b) - par[13]*bracket1 - par[12]*bracket2
+  M_star <- fnet_M(par,T_b) - par$lE_s*bracket1 - par$lE_r*bracket2
   # NOTE: (M-lE_b) is a function of T_b!!! See fnet_M()
   return(M_star)
 }
@@ -87,9 +87,9 @@ fM_star <- function(par,T_b){
 #=======Calculate (M-lE_b)=========
 fnet_M <- function(par,T_b){
   P <- .973931 # slope of relationship between net_M and T_b
-  T_p <- 25 # temp for basal metabolic rate M = par[10]
+  T_p <- 25 # temp for basal metabolic rate M = par$M
   # (M-lE_b) = (M-lE_b)_p + P*(T_b - T_p)
-  net_M <- (par[10]-par[11]) + P*(T_b-T_p)
+  net_M <- (par$M-par$lE_b) + P*(T_b-T_p)
   return(net_M)
 }
 
