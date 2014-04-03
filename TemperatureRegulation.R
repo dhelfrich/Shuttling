@@ -45,16 +45,16 @@ par$h <- 1
 par$max_iter <- 10000
 
 # to keep things straight, here's an addressed vector of coefficients
-#         $K_s $K_f$K_sf  $G $H $T_rbar  $T_g $R $Q_n $M $lE_b  $lE_r  $lE_s[14][15][16][17]  [18]
+#         $K_s $K_f$K_sf  $G $H $T_rbar  $T_g $R $Q_n $M $lE_b  $lE_r  $lE_s$C $K_0  $tau$h  $max_iter
 #par <- c(K_s,K_f, K_sf,   G, H, T_rbar, T_g, R, Q_n, M, lE_b,  lE_r,  lE_s, C, K_0, tau, h, max_iter)
 
 
 #=======ODE===========
 # Eq (13.21) or (13.48)
 ddt <- function(par,T_b,T_a){
-  T_delta <- fM_star(par,T_b)/par[15] #M_star/K_0
+  T_delta <- fM_star(par,T_b)/par$K_0 #M_star/$K_0
   
-  dTbdt <- (fT_e(par,T_a)+T_delta-T_b)/par[16] #(T_e+T_delta+T_b)/tau
+  dTbdt <- (fT_e(par,T_a)+T_delta-T_b)/par$tau #(T_e+T_delta+T_b)/tau
   
   return(dTbdt)
 }
@@ -97,7 +97,7 @@ fnet_M <- function(par,T_b){
 # Runge Kutta 4 Method
 # Take values for air temp and initial body temp
 integrate <- function (par, T_b0, T_a, max_iter) {
-  h <- par[17] # Resolution of integration
+  h <- par$h # Resolution of integration
   T_btrack <- c()
   T_btrack <- append(T_btrack,T_b0)
   
